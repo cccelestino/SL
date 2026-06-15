@@ -1,6 +1,7 @@
 import { useEffect, useRef } from 'react'
 
-export default function ParticleField({ type = 'star', count = 30 }) {
+// Literary particles: dust motes, ink drops, tiny quill strokes
+export default function ParticleField({ count = 28 }) {
   const canvasRef = useRef(null)
 
   useEffect(() => {
@@ -9,76 +10,73 @@ export default function ParticleField({ type = 'star', count = 30 }) {
     const ctx = canvas.getContext('2d')
 
     const resize = () => {
-      canvas.width = window.innerWidth
+      canvas.width  = window.innerWidth
       canvas.height = window.innerHeight
     }
     resize()
     window.addEventListener('resize', resize)
 
-    const particles = Array.from({ length: count }, () => ({
-      x: Math.random() * window.innerWidth,
-      y: Math.random() * window.innerHeight,
-      size: Math.random() * 4 + 1,
-      speedX: (Math.random() - 0.5) * 0.4,
-      speedY: Math.random() * -0.6 - 0.2,
-      opacity: Math.random() * 0.7 + 0.3,
-      life: Math.random(),
+    // Sepia / parchment dust colors
+    const colors = ['#C4A882', '#A8845A', '#8B6340', '#DEC9A0', '#EDE0C4', '#7A5C38']
+
+    const particles = Array.from({ length: count }, (_, i) => ({
+      x:      Math.random() * window.innerWidth,
+      y:      Math.random() * window.innerHeight,
+      size:   Math.random() * 1.8 + 0.4,
+      speedX: (Math.random() - 0.5) * 0.18,
+      speedY: Math.random() * -0.3 - 0.05,
+      opacity: Math.random() * 0.5 + 0.1,
+      life:   Math.random() * Math.PI * 2,
+      color:  colors[i % colors.length],
+      type:   i % 4, // 0=dot, 1=tiny line, 2=cross-hair, 3=diamond
     }))
 
-    const colors = {
-      heart:    ['#F4A0B0', '#E8688A', '#F9C784'],
-      star:     ['#F9C784', '#ffffff', '#F4A0B0'],
-      circle:   ['#9B72CF', '#F4A0B0', '#F9C784'],
-      petal:    ['#F4A0B0', '#E8688A', '#ffffff'],
-      moon:     ['#9B72CF', '#6B4FA0', '#F9C784'],
-      sparkle:  ['#F9C784', '#ffffff', '#9B72CF'],
-      firework: ['#F4A0B0', '#F9C784', '#9B72CF', '#F4845F', '#ffffff'],
-    }
-
-    const palette = colors[type] || colors.star
-
-    function drawHeart(ctx, x, y, size, color, opacity) {
+    function drawDot(x, y, size, color, alpha) {
       ctx.save()
-      ctx.globalAlpha = opacity
+      ctx.globalAlpha = alpha
       ctx.fillStyle = color
       ctx.beginPath()
-      ctx.moveTo(x, y)
-      const s = size
-      ctx.bezierCurveTo(x, y - s * 0.5, x - s, y - s * 0.5, x - s, y)
-      ctx.bezierCurveTo(x - s, y + s * 0.5, x, y + s, x, y + s * 1.2)
-      ctx.bezierCurveTo(x, y + s, x + s, y + s * 0.5, x + s, y)
-      ctx.bezierCurveTo(x + s, y - s * 0.5, x, y - s * 0.5, x, y)
+      ctx.arc(x, y, size, 0, Math.PI * 2)
       ctx.fill()
       ctx.restore()
     }
 
-    function drawStar(ctx, x, y, size, color, opacity) {
+    function drawStroke(x, y, size, color, alpha) {
       ctx.save()
-      ctx.globalAlpha = opacity
+      ctx.globalAlpha = alpha
+      ctx.strokeStyle = color
+      ctx.lineWidth = 0.6
+      ctx.lineCap = 'round'
+      ctx.beginPath()
+      ctx.moveTo(x - size * 1.5, y)
+      ctx.lineTo(x + size * 1.5, y)
+      ctx.stroke()
+      ctx.restore()
+    }
+
+    function drawDiamond(x, y, size, color, alpha) {
+      ctx.save()
+      ctx.globalAlpha = alpha
       ctx.fillStyle = color
       ctx.beginPath()
-      for (let i = 0; i < 5; i++) {
-        const angle = (i * 4 * Math.PI) / 5 - Math.PI / 2
-        const r = i % 2 === 0 ? size : size * 0.4
-        ctx.lineTo(x + r * Math.cos(angle), y + r * Math.sin(angle))
-      }
+      ctx.moveTo(x, y - size)
+      ctx.lineTo(x + size * 0.5, y)
+      ctx.lineTo(x, y + size)
+      ctx.lineTo(x - size * 0.5, y)
       ctx.closePath()
       ctx.fill()
       ctx.restore()
     }
 
-    function drawSparkle(ctx, x, y, size, color, opacity) {
+    function drawPlus(x, y, size, color, alpha) {
       ctx.save()
-      ctx.globalAlpha = opacity
+      ctx.globalAlpha = alpha
       ctx.strokeStyle = color
-      ctx.lineWidth = 1
-      for (let i = 0; i < 4; i++) {
-        const angle = (i * Math.PI) / 4
-        ctx.beginPath()
-        ctx.moveTo(x + Math.cos(angle) * size * 0.3, y + Math.sin(angle) * size * 0.3)
-        ctx.lineTo(x + Math.cos(angle) * size, y + Math.sin(angle) * size)
-        ctx.stroke()
-      }
+      ctx.lineWidth = 0.5
+      ctx.beginPath()
+      ctx.moveTo(x, y - size); ctx.lineTo(x, y + size)
+      ctx.moveTo(x - size, y); ctx.lineTo(x + size, y)
+      ctx.stroke()
       ctx.restore()
     }
 
@@ -86,49 +84,34 @@ export default function ParticleField({ type = 'star', count = 30 }) {
     function animate() {
       ctx.clearRect(0, 0, canvas.width, canvas.height)
 
-      particles.forEach((p, i) => {
-        const color = palette[i % palette.length]
+      for (const p of particles) {
         p.x += p.speedX
         p.y += p.speedY
-        p.life += 0.005
-        p.opacity = Math.abs(Math.sin(p.life)) * 0.8 + 0.1
+        p.life += 0.006
+        p.opacity = Math.abs(Math.sin(p.life)) * 0.45 + 0.05
 
-        if (p.y < -20) { p.y = canvas.height + 10; p.x = Math.random() * canvas.width }
-        if (p.x < -20) p.x = canvas.width + 10
-        if (p.x > canvas.width + 20) p.x = -10
+        if (p.y < -10)               { p.y = canvas.height + 5; p.x = Math.random() * canvas.width }
+        if (p.x < -10)                 p.x = canvas.width + 5
+        if (p.x > canvas.width + 10)   p.x = -5
 
-        if (type === 'heart' || type === 'firework') {
-          drawHeart(ctx, p.x, p.y, p.size, color, p.opacity)
-        } else if (type === 'star' || type === 'moon') {
-          drawStar(ctx, p.x, p.y, p.size + 1, color, p.opacity)
-        } else if (type === 'sparkle') {
-          drawSparkle(ctx, p.x, p.y, p.size * 2, color, p.opacity)
-        } else {
-          ctx.save()
-          ctx.globalAlpha = p.opacity
-          ctx.fillStyle = color
-          ctx.beginPath()
-          ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2)
-          ctx.fill()
-          ctx.restore()
-        }
-      })
+        if      (p.type === 1) drawStroke (p.x, p.y, p.size, p.color, p.opacity)
+        else if (p.type === 2) drawPlus   (p.x, p.y, p.size * 2, p.color, p.opacity)
+        else if (p.type === 3) drawDiamond(p.x, p.y, p.size, p.color, p.opacity)
+        else                   drawDot    (p.x, p.y, p.size, p.color, p.opacity)
+      }
 
       raf = requestAnimationFrame(animate)
     }
     animate()
 
-    return () => {
-      cancelAnimationFrame(raf)
-      window.removeEventListener('resize', resize)
-    }
-  }, [type, count])
+    return () => { cancelAnimationFrame(raf); window.removeEventListener('resize', resize) }
+  }, [count])
 
   return (
     <canvas
       ref={canvasRef}
       className="fixed inset-0 pointer-events-none z-0"
-      style={{ opacity: 0.6 }}
+      style={{ opacity: 0.7 }}
     />
   )
 }

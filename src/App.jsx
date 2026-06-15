@@ -7,27 +7,30 @@ import SunsetBackground from './components/SunsetBackground'
 
 export default function App() {
   const [index, setIndex] = useState(0)
-
   const card = cards[index]
-  const totalSteps = cards.length
-  const progress = Array.from({ length: totalSteps - 1 }, (_, i) => i < index)
+  const progress = Array.from({ length: cards.length - 1 }, (_, i) => i < index)
 
-  const handleNext = () => {
-    setIndex(prev => (prev >= cards.length - 1 ? 0 : prev + 1))
-  }
+  const handleNext = () => setIndex(prev => (prev >= cards.length - 1 ? 0 : prev + 1))
 
   return (
-    <div className="relative w-full h-screen overflow-hidden select-none">
+    <div className="relative w-full h-safe min-h-screen overflow-hidden vignette">
       <SunsetBackground index={index} />
-      <ParticleField type={card.particle} count={index === cards.length - 1 ? 60 : 25} />
+      <ParticleField count={index === cards.length - 1 ? 45 : 22} />
 
+      {/* Warm candlelight glow top-left */}
       <div
-        className="fixed top-[-20%] left-[-10%] w-[60vw] h-[60vw] rounded-full pointer-events-none opacity-20 animate-pulse-slow"
-        style={{ background: 'radial-gradient(circle, #F4A0B0, transparent 70%)' }}
+        className="fixed top-[-10%] left-[-5%] w-[55vw] h-[55vw] rounded-full pointer-events-none"
+        style={{
+          background: 'radial-gradient(circle, rgba(168,132,90,0.18), transparent 70%)',
+          animation: 'candle 2.5s ease-in-out infinite',
+        }}
       />
+      {/* Deep shadow bottom-right */}
       <div
-        className="fixed bottom-[-20%] right-[-10%] w-[50vw] h-[50vw] rounded-full pointer-events-none opacity-20 animate-pulse-slow"
-        style={{ background: 'radial-gradient(circle, #9B72CF, transparent 70%)', animationDelay: '1.5s' }}
+        className="fixed bottom-[-15%] right-[-10%] w-[50vw] h-[50vw] rounded-full pointer-events-none"
+        style={{
+          background: 'radial-gradient(circle, rgba(92,63,30,0.12), transparent 70%)',
+        }}
       />
 
       <AnimatePresence mode="wait">

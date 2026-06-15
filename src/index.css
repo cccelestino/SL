@@ -1,30 +1,100 @@
-@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&family=Lato:wght@300;400&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500;1,600&family=Lato:wght@300;400&family=Courier+Prime:ital,wght@0,400;1,400&display=swap');
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 @layer base {
-  html, body, #root {
+  *, *::before, *::after { box-sizing: border-box; }
+  html {
     height: 100%;
-    overflow: hidden;
+    overscroll-behavior: none;
+    background: #1E1008;
   }
+  body {
+    height: 100%;
+    margin: 0; padding: 0;
+    overscroll-behavior: none;
+    padding-top:    env(safe-area-inset-top);
+    padding-bottom: env(safe-area-inset-bottom);
+    padding-left:   env(safe-area-inset-left);
+    padding-right:  env(safe-area-inset-right);
+    background: #1E1008;
+  }
+  #root { height: 100%; }
 }
 
 @layer utilities {
-  .shimmer-text {
-    background: linear-gradient(90deg, #F9C784 0%, #F4A0B0 25%, #ffffff 50%, #F4A0B0 75%, #F9C784 100%);
+  /* Parchment paper texture on cards */
+  .paper-texture {
+    background-color: #F7F0DC;
+    background-image:
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='400'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='400' height='400' filter='url(%23noise)' opacity='0.06'/%3E%3C/svg%3E"),
+      linear-gradient(135deg, #FDFAF4 0%, #F7F0DC 40%, #EDE0C4 70%, #F0E8D0 100%);
+    background-blend-mode: multiply, normal;
+  }
+
+  /* Aged/yellowed variant for deeper cards */
+  .paper-aged {
+    background-color: #EDE0C4;
+    background-image:
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='400'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='400' height='400' filter='url(%23noise)' opacity='0.09'/%3E%3C/svg%3E"),
+      linear-gradient(160deg, #EDE0C4 0%, #DEC9A0 50%, #C8A97A 100%);
+    background-blend-mode: multiply, normal;
+  }
+
+  /* Faded ink lines (ruled paper feel) */
+  .ruled-lines {
+    background-image: repeating-linear-gradient(
+      transparent,
+      transparent 27px,
+      rgba(92,63,32,0.10) 28px
+    );
+  }
+
+  /* Ink shimmer on final card title */
+  .ink-shimmer {
+    background: linear-gradient(90deg,
+      #2C1F14 0%,
+      #8B6340 30%,
+      #C4A882 50%,
+      #8B6340 70%,
+      #2C1F14 100%
+    );
     background-size: 200% auto;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
-    animation: shimmer 3s linear infinite;
+    animation: ink-write 4s linear infinite;
   }
-  .card-glass {
-    background: rgba(255,255,255,0.08);
-    backdrop-filter: blur(20px);
-    border: 1px solid rgba(255,255,255,0.2);
+
+  /* Dark literary background */
+  .book-bg {
+    background:
+      radial-gradient(ellipse at 20% 20%, rgba(92,63,32,0.25) 0%, transparent 60%),
+      radial-gradient(ellipse at 80% 80%, rgba(30,16,8,0.8) 0%, transparent 60%),
+      #150D07;
   }
-  .text-shadow {
-    text-shadow: 0 2px 20px rgba(0,0,0,0.5);
+
+  .h-safe { height: 100svh; }
+
+  /* Subtle vignette on the page bg */
+  .vignette::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    background: radial-gradient(ellipse at center, transparent 50%, rgba(0,0,0,0.55) 100%);
+    z-index: 1;
+  }
+
+  /* Decorative drop-cap feel */
+  .drop-cap::first-letter {
+    float: left;
+    font-size: 3.2em;
+    line-height: 0.75;
+    margin-right: 6px;
+    margin-top: 4px;
+    color: #5C3F20;
+    font-family: 'EB Garamond', serif;
   }
 }
