@@ -99,6 +99,28 @@ export default function CardView({ card, onNext, progress }) {
               borderRadius: '0 2px 0 0',
             }}
           />
+          {/* Final: decorative stars row */}
+          {isFinal && (
+            <motion.div
+              variants={lineVariants}
+              className="flex justify-center gap-3 mt-6"
+            >
+              {[Star, Star, Heart, Star, Star].map((Ic, i) => (
+                <motion.div
+                  key={i}
+                  animate={{ opacity: [0.3, 0.9, 0.3] }}
+                  transition={{ duration: 2.5, delay: i * 0.4, repeat: Infinity }}
+                >
+                  <Ic
+                    size={i === 2 ? 16 : 11}
+                    strokeWidth={1.2}
+                    className="text-sepia"
+                    fill={i === 2 ? '#8B6340' : 'none'}
+                  />
+                </motion.div>
+              ))}
+            </motion.div>
+          )}
           <div
             className="absolute top-0 right-0 w-7 h-7 xs:w-8 xs:h-8"
             style={{
@@ -108,30 +130,11 @@ export default function CardView({ card, onNext, progress }) {
             }}
           />
 
+            
           {/* Ruled lines background on non-final cards */}
           {!isFinal && (
             <div className="absolute inset-0 rounded-sm overflow-hidden pointer-events-none ruled-lines opacity-60" />
           )}
-
-          {/* Icon — small, inline, literary */}
-          <motion.div variants={lineVariants} className="flex justify-center mb-5 xs:mb-6">
-            <div className={`
-              w-10 h-10 xs:w-12 xs:h-12
-              rounded-full
-              flex items-center justify-center
-              border
-              ${isFinal
-                ? 'border-sepia bg-parchment-200'
-                : 'border-parchment-300 bg-parchment-100'
-              }
-            `}>
-              <Icon
-                size={isFinal ? 22 : 18}
-                strokeWidth={1.3}
-                className={isFinal ? 'text-sepia-dark' : 'text-sepia'}
-              />
-            </div>
-          </motion.div>
 
           {/* Eyebrow — like a chapter subtitle */}
           <motion.p

@@ -3,7 +3,7 @@ export const cards = [
     id: 0,
     type: 'intro',
     eyebrow: 'Hay algo que quiero decirte',
-    title: 'Para ti,\nAmor',
+    title: 'Para ti,\n',
     body: 'Abre esto solo si tienes un momento para sentir algo bonito...',
     cta: 'Abrir carta',
     particle: 'spark',
@@ -58,7 +58,7 @@ export const cards = [
     type: 'final',
     eyebrow: 'Siempre',
     title: 'Te amo',
-    body: 'Con todo lo que soy, con todo lo que tengo, con todo lo que seré.\n\nCon amor,\nTu nombre',
+    body: 'Con todo lo que soy, con todo lo que tengo, con todo lo que seré.\n\nCon amor,\nSonia',
     particle: 'horizon',
   },
 ]
