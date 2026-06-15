@@ -71,7 +71,7 @@ export const cards = [
     emoji: '❤️',
     eyebrow: 'Siempre',
     title: 'Te amo',
-    body: 'Con todo lo que soy, con todo lo que tengo, con todo lo que seré.\n\nCon amor,\nTu nombre',
+    body: 'Con todo lo que soy, con todo lo que tengo, con todo lo que seré.\n\nCon amor,\nSonia',
     accent: 'from-sunset-rose via-sunset-violet to-sunset-deep',
     particle: 'firework',
   },
