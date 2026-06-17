@@ -2,9 +2,9 @@ export const cards = [
   {
     id: 0,
     type: 'intro',
-    eyebrow: 'Hay algo que quiero decirte',
-    title: 'Para ti,\n',
-    body: 'Abre esto solo si tienes un momento para sentir algo bonito...',
+    eyebrow: '💞',
+    title: 'Con amor, Para ti.\n',
+    body: 'Abre esto, si tienes un momento para sentir algo bonito...',
     cta: 'Abrir carta',
     particle: 'spark',
   },
@@ -14,7 +14,7 @@ export const cards = [
     eyebrow: 'Cada mañana',
     title: 'Lo primero\nque pienso',
     body: 'Cuando abro los ojos, antes de que el mundo empiece a hacer ruido, ya estás tú. Sin esfuerzo. Solo ahí.',
-    cta: 'Seguir leyendo',
+    cta: 'Segue leyendo',
     particle: 'ray',
   },
   {
@@ -23,7 +23,7 @@ export const cards = [
     eyebrow: 'Lo que no sé explicar',
     title: 'Cómo haces\neso que haces',
     body: 'Que con solo estar cerca, todo parece más fácil. Más claro. Como si el horizonte se abriera un poco más.',
-    cta: 'Continuar',
+    cta: 'Continua',
     particle: 'wave',
   },
   {
@@ -32,7 +32,7 @@ export const cards = [
     eyebrow: 'Mil veces',
     title: 'Te elegiría\notra vez',
     body: 'Si volviera a empezar, si me perdiera en cualquier otra historia, al final del camino siempre llegaría a ti.',
-    cta: 'Casi llegamos',
+    cta: 'Casi llegas',
     particle: 'drift',
   },
   {
@@ -56,9 +56,8 @@ export const cards = [
   {
     id: 6,
     type: 'final',
-    eyebrow: 'Siempre',
     title: 'Te amo',
-    body: 'Con todo lo que soy, con todo lo que tengo, con todo lo que seré.\n\nCon amor,\nSonia',
+    body: 'Con todo lo que soy, con todo lo que tengo, con todo lo que seré y con todo lo que siento por ti.\n\nCon amor,\nSonia',
     particle: 'horizon',
   },
 ]
